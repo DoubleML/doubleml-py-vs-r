@@ -5,22 +5,11 @@ from sklearn.base import clone
 from sklearn.linear_model import LinearRegression
 
 import doubleml as dml
-
-from doubleml.tests.helper_general import get_n_datasets
 from doubleml.tests.helper_pyvsr import export_smpl_split_to_r, r_MLPLR
 
 rpy2 = pytest.importorskip("rpy2")
 from rpy2.robjects import pandas2ri
 pandas2ri.activate()
-
-# number of datasets per dgp
-n_datasets = get_n_datasets()
-
-
-@pytest.fixture(scope='module',
-                params=range(n_datasets))
-def idx(request):
-    return request.param
 
 
 @pytest.fixture(scope='module',
@@ -36,19 +25,17 @@ def dml_procedure(request):
 
 
 @pytest.fixture(scope="module")
-def dml_plr_pyvsr_fixture(generate_data1, idx, score, dml_procedure):
+def dml_plr_pyvsr_fixture(generate_data_plr, score, dml_procedure):
     n_folds = 2
 
     # collect data
-    data = generate_data1[idx]
-    X_cols = data.columns[data.columns.str.startswith('X')].tolist()
+    obj_dml_data = generate_data_plr
 
     # Set machine learning methods for m & g
     learner = LinearRegression()
     ml_g = clone(learner)
     ml_m = clone(learner)
 
-    obj_dml_data = dml.DoubleMLData(data, 'y', ['d'], X_cols)
     dml_plr_obj = dml.DoubleMLPLR(obj_dml_data,
                                   ml_g, ml_m,
                                   n_folds,
@@ -61,7 +48,7 @@ def dml_plr_pyvsr_fixture(generate_data1, idx, score, dml_procedure):
     # fit the DML model in R
     all_train, all_test = export_smpl_split_to_r(dml_plr_obj.smpls[0])
 
-    r_dataframe = pandas2ri.py2rpy(data)
+    r_dataframe = pandas2ri.py2rpy(obj_dml_data.data)
     res_r = r_MLPLR(r_dataframe, score, dml_procedure,
                     all_train, all_test)
 
