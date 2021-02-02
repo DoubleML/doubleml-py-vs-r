@@ -6,7 +6,7 @@ from sklearn.base import clone
 from sklearn.linear_model import LinearRegression, LogisticRegression
 
 import doubleml as dml
-from doubleml.tests.helper_pyvsr import export_smpl_split_to_r, r_IRM
+from _utils_pyvsr import export_smpl_split_to_r, r_IRM
 
 rpy2 = pytest.importorskip("rpy2")
 from rpy2.robjects import pandas2ri

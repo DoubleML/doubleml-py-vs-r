@@ -6,7 +6,7 @@ from sklearn.base import clone
 from sklearn.linear_model import LinearRegression
 
 import doubleml as dml
-from doubleml.tests.helper_pyvsr import export_smpl_split_to_r, r_MLPLIV, \
+from _utils_pyvsr import export_smpl_split_to_r, r_MLPLIV, \
     r_MLPLIV_PARTIAL_X, r_MLPLIV_PARTIAL_Z, r_MLPLIV_PARTIAL_XZ
 
 rpy2 = pytest.importorskip("rpy2")
