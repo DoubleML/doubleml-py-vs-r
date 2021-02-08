@@ -1,5 +1,8 @@
 # DoubleML - Unit tests for alignment of the Python and R package
 
+![Python vs R (released)](https://github.com/DoubleML/doubleml-py-vs-r/workflows/Python%20vs%20R%20(released)/badge.svg)
+![Python vs R (dev)](https://github.com/DoubleML/doubleml-py-vs-r/workflows/Python%20vs%20R%20(dev)/badge.svg)
+
 - This repo contains unit tests to check for alignment of the Python and R package DoubleML.
 - Checks are performed with github actions.
 - Test are cron-scheduled.
