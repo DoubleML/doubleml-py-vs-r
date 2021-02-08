@@ -58,7 +58,7 @@ jobs:
     - name: Install system dependencies
       if: runner.os == 'Linux'
       run: |
-        sudo apt-get install - y zlib1g-dev libicu-dev pandoc make libcurl4-openssl-dev libssl-dev
+        sudo apt-get install -y zlib1g-dev libicu-dev pandoc make libcurl4-openssl-dev libssl-dev
     - name: Install R pkg DoubleML (released)
       run: |
         remotes::install_cran("DoubleML", dependencies = TRUE)
