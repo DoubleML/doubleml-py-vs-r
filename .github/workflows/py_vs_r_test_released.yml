@@ -58,10 +58,7 @@ jobs:
     - name: Install system dependencies
       if: runner.os == 'Linux'
       run: |
-        while read -r cmd
-        do
-          eval sudo $cmd
-        done < <(Rscript -e 'writeLines(remotes::system_requirements("ubuntu", "20.04"))')
+        sudo apt-get install - y zlib1g-dev libicu-dev pandoc make libcurl4-openssl-dev libssl-dev
     - name: Install R pkg DoubleML (released)
       run: |
         remotes::install_cran("DoubleML", dependencies = TRUE)
