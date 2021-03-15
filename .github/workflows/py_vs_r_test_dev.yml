@@ -63,7 +63,7 @@ jobs:
     - name: Install system dependencies
       if: runner.os == 'Linux'
       run: |
-        sudo rm -rf ${ R_LIBS_USER }
+        sudo rm -rf ${{ env.R_LIBS_USER }}
         sudo apt-get install -y zlib1g-dev libicu-dev pandoc make libcurl4-openssl-dev libssl-dev
     - name: Install R pkg DoubleML (dev)
       run: |
