@@ -59,14 +59,13 @@ jobs:
       with:
         path: ${{ env.R_LIBS_USER }}
         key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-release-pkg-test-${{ hashFiles('.github/depends.Rds') }}
-        restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-release-pkg-test-
+        restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-release-pkg-test-ABC
     - name: Install system dependencies
       if: runner.os == 'Linux'
       run: |
         sudo apt-get install -y zlib1g-dev libicu-dev pandoc make libcurl4-openssl-dev libssl-dev
     - name: Install R pkg DoubleML (dev)
       run: |
-        remotes::install_cran("stringi", dependencies = TRUE)
         remotes::install_github("DoubleML/doubleml-for-r", dependencies = TRUE)
         remotes::install_cran("rcmdcheck")
       shell: Rscript {0}
