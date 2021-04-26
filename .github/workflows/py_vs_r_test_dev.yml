@@ -58,13 +58,11 @@ jobs:
       uses: actions/cache@v2
       with:
         path: ${{ env.R_LIBS_USER }}
-        key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-release-pkg-test-${{ hashFiles('.github/depends.Rds') }}
-        restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-release-pkg-test
+        key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-dev-pkg-test-${{ hashFiles('.github/depends.Rds') }}
+        restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-dev-pkg-test-
     - name: Install system dependencies
       if: runner.os == 'Linux'
       run: |
-        rm -rf /home/runner/work/_temp/Library
-        mkdir /home/runner/work/_temp/Library
         sudo apt-get install -y zlib1g-dev libicu-dev pandoc make libcurl4-openssl-dev libssl-dev
     - name: Install R pkg DoubleML (dev)
       run: |
