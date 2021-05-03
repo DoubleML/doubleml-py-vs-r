@@ -24,8 +24,14 @@ def dml_procedure(request):
     return request.param
 
 
+@pytest.fixture(scope='module',
+                params=[1])
+def n_rep(request):
+    return request.param
+
+
 @pytest.fixture(scope="module")
-def dml_plr_pyvsr_fixture(generate_data_plr, score, dml_procedure):
+def dml_plr_pyvsr_fixture(generate_data_plr, score, dml_procedure, n_rep):
     n_folds = 2
 
     # collect data
@@ -39,6 +45,7 @@ def dml_plr_pyvsr_fixture(generate_data_plr, score, dml_procedure):
     dml_plr_obj = dml.DoubleMLPLR(obj_dml_data,
                                   ml_g, ml_m,
                                   n_folds,
+                                  n_rep=n_rep,
                                   score=score,
                                   dml_procedure=dml_procedure)
 
@@ -46,11 +53,13 @@ def dml_plr_pyvsr_fixture(generate_data_plr, score, dml_procedure):
     dml_plr_obj.fit()
 
     # fit the DML model in R
-    all_train, all_test = export_smpl_split_to_r(dml_plr_obj.smpls[0])
+    smpls_for_r = list()
+    for i_rep in range(n_rep):
+        all_train, all_test = export_smpl_split_to_r(dml_plr_obj.smpls[0])
+        smpls_for_r.append([all_train, all_test])
 
     r_dataframe = pandas2ri.py2rpy(obj_dml_data.data)
-    res_r = r_MLPLR(r_dataframe, score, dml_procedure,
-                    all_train, all_test)
+    res_r = r_MLPLR(r_dataframe, score, dml_procedure, n_rep, smpls_for_r)
 
     res_dict = {'coef_py': dml_plr_obj.coef,
                 'coef_r': res_r[0],

@@ -25,7 +25,7 @@ r_MLPLR = robjects.r('''
         library('data.table')
         library('mlr3')
 
-        f <- function(data, score, dml_procedure, train_ids, test_ids) {
+        f <- function(data, score, dml_procedure, n_rep, smpls_for_r) {
             data = data.table(data)
             mlmethod_m = 'regr.lm'
             mlmethod_g = 'regr.lm'
@@ -40,8 +40,11 @@ r_MLPLR = robjects.r('''
                                                ml_m = mlmethod_m,
                                                dml_procedure = dml_procedure,
                                                score = score)
-
-            smpls = list(list(train_ids=train_ids, test_ids=test_ids))
+            smpls = list()
+            for (i_rep in 1:n_rep) {
+                this_smpl = smpls_for_r[[i_rep]]
+                smpls[[i_rep]] = list(train_ids=this_smpl[[1]], test_ids=this_smpl[[2]])
+            }
             double_mlplr_obj$set_sample_splitting(smpls)
 
             double_mlplr_obj$fit()
