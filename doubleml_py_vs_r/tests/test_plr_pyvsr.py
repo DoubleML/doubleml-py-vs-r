@@ -25,7 +25,7 @@ def dml_procedure(request):
 
 
 @pytest.fixture(scope='module',
-                params=[1])
+                params=[1, 3])
 def n_rep(request):
     return request.param
 
@@ -55,7 +55,7 @@ def dml_plr_pyvsr_fixture(generate_data_plr, score, dml_procedure, n_rep):
     # fit the DML model in R
     smpls_for_r = list()
     for i_rep in range(n_rep):
-        all_train, all_test = export_smpl_split_to_r(dml_plr_obj.smpls[0])
+        all_train, all_test = export_smpl_split_to_r(dml_plr_obj.smpls[i_rep])
         smpls_for_r.append([all_train, all_test])
 
     r_dataframe = pandas2ri.py2rpy(obj_dml_data.data)
