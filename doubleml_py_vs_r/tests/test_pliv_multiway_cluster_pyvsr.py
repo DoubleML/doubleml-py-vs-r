@@ -87,7 +87,6 @@ def dml_pliv_one_cluster_pyvsr_fixture(generate_data_pliv_one_way_cluster, dml_p
                                     ml_g, ml_m, ml_r,
                                     n_folds,
                                     dml_procedure=dml_procedure)
-    print(obj_dml_data)
     dml_pliv_obj.fit()
 
     # fit the DML model in R
