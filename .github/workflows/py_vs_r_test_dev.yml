@@ -41,7 +41,8 @@ jobs:
         python -m pip install --upgrade pip
         cd doubleml-for-py
         pip install --editable .
-        pip install pytest rpy2
+        cd ..
+        pip install -r requirements.txt
 
     - name: Set up R
       uses: r-lib/actions/setup-r@v1
