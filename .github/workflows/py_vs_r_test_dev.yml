@@ -17,6 +17,8 @@ jobs:
   build:
 
     runs-on: ${{ matrix.config.os }}
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     name: ${{ matrix.config.os }} (${{ matrix.config.python-version }})
 
     strategy:
@@ -67,8 +69,9 @@ jobs:
         sudo apt-get install -y zlib1g-dev libicu-dev pandoc make libcurl4-openssl-dev libssl-dev
     - name: Install R pkg DoubleML (dev)
       run: |
-        install.packages(c('DoubleML', 'devtools', 'rcmdcheck'))
-        devtools::install_github("DoubleML/doubleml-for-r")
+        install.packages('remotes')
+        remotes::install_github("DoubleML/doubleml-for-r", dependencies = TRUE)
+        remotes::install_cran("rcmdcheck")
       shell: Rscript {0}
 
     - name: Test with pytest
