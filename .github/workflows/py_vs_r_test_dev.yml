@@ -17,9 +17,12 @@ jobs:
   build:
 
     runs-on: ${{ matrix.config.os }}
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     name: ${{ matrix.config.os }} (${{ matrix.config.python-version }})
 
     strategy:
+      fail-fast: false
       matrix:
         config:
           - {os: ubuntu-latest, python-version: 3.8, r-version: release}
