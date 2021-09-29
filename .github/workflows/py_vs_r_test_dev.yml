@@ -31,6 +31,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        path: doubleml-py-vs-r
     - uses: actions/checkout@v2
       with:
         repository: DoubleML/doubleml-for-py
@@ -41,9 +43,11 @@ jobs:
         python-version: ${{ matrix.config.python-version }}
     - name: Install Python pkg DoubleML (dev)
       run: |
+        cd doubleml-py-vs-r
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip uninstall -y DoubleML
+        cd ..
         cd doubleml-for-py
         pip install --editable .
 
@@ -77,4 +81,5 @@ jobs:
 
     - name: Test with pytest
       run: |
+        cd doubleml-py-vs-r
         pytest
