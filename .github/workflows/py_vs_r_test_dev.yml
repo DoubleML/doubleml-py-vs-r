@@ -50,7 +50,6 @@ jobs:
         cd ..
         cd doubleml-for-py
         pip install --editable .
-        cd ..
 
     - name: Set up R
       uses: r-lib/actions/setup-r@v1
@@ -59,16 +58,16 @@ jobs:
     - name: Query R pkg dependencies (taken from released!)
       run: |
         install.packages('remotes')
-        saveRDS(remotes::package_deps("DoubleML", dependencies = TRUE), ".github/depends.Rds", version = 2)
-        writeLines(sprintf("R-%i.%i", getRversion()$major, getRversion()$minor), ".github/R-version")
+        saveRDS(remotes::package_deps("DoubleML", dependencies = TRUE), "doubleml-py-vs-r/.github/depends.Rds", version = 2)
+        writeLines(sprintf("R-%i.%i", getRversion()$major, getRversion()$minor), "doubleml-py-vs-r/.github/R-version")
       shell: Rscript {0}
     - name: Cache R packages
       if: runner.os != 'Windows'
       uses: actions/cache@v2
       with:
         path: ${{ env.R_LIBS_USER }}
-        key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-dev-pkg-test-${{ hashFiles('.github/depends.Rds') }}
-        restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-dev-pkg-test-
+        key: ${{ runner.os }}-${{ hashFiles('doubleml-py-vs-r/.github/R-version') }}-dev-pkg-test-${{ hashFiles('doubleml-py-vs-r/.github/depends.Rds') }}
+        restore-keys: ${{ runner.os }}-${{ hashFiles('doubleml-py-vs-r/.github/R-version') }}-dev-pkg-test-
     - name: Install system dependencies
       if: runner.os == 'Linux'
       run: |
