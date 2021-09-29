@@ -50,6 +50,7 @@ jobs:
         cd ..
         cd doubleml-for-py
         pip install --editable .
+        cd ..
 
     - name: Set up R
       uses: r-lib/actions/setup-r@v1
