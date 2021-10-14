@@ -2,7 +2,8 @@ import numpy as np
 import pytest
 
 from doubleml import DoubleMLData
-from doubleml.datasets import make_plr_turrell2018, make_irm_data, make_iivm_data, make_pliv_CHS2015
+from doubleml.datasets import make_plr_turrell2018, make_irm_data, make_iivm_data, make_pliv_CHS2015,\
+    make_pliv_multiway_cluster_CKMS2021
 from doubleml.tests.conftest import make_data_pliv_partialZ
 
 
@@ -124,5 +125,43 @@ def generate_data_pliv_partialZ(request):
     z_cols = [f'Z{i + 1}' for i in np.arange(150)]
     df = make_data_pliv_partialZ(N, alpha=theta, dim_x=p, dim_z=150)
     data = DoubleMLData(df, 'y', 'd', x_cols, z_cols)
+
+    return data
+
+
+@pytest.fixture(scope='session',
+                params=[(10, 10),
+                        (15, 25),
+                        (35, 7)])
+def generate_data_pliv_two_way_cluster(request):
+    N_p = request.param
+    np.random.seed(1111)
+    # setting parameters
+    N = N_p[0]
+    M = N_p[1]
+
+    # generating data
+    data = make_pliv_multiway_cluster_CKMS2021(N, M, dim_X=10)
+
+    return data
+
+
+@pytest.fixture(scope='session',
+                params=[(10, 10),
+                        (15, 25)])
+def generate_data_pliv_one_way_cluster(request):
+    N_p = request.param
+    np.random.seed(1111)
+    # setting parameters
+    N = N_p[0]
+    M = N_p[1]
+
+    # generating data
+    data = make_pliv_multiway_cluster_CKMS2021(N, M, dim_X=10,
+                                               omega_X=np.array([0.25, 0]),
+                                               omega_epsilon=np.array([0.25, 0]),
+                                               omega_v=np.array([0.25, 0]),
+                                               omega_V=np.array([0.25, 0]))
+    data.cluster_cols = data.cluster_cols[0]
 
     return data
