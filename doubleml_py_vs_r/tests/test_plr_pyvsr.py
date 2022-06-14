@@ -37,14 +37,18 @@ def dml_plr_pyvsr_fixture(generate_data_plr, score, dml_procedure, n_rep):
     # collect data
     obj_dml_data = generate_data_plr
 
-    # Set machine learning methods for m & g
+    # Set machine learning methods for l, m & g
     learner = LinearRegression()
-    ml_g = clone(learner)
+    ml_l = clone(learner)
     ml_m = clone(learner)
+    if score == 'IV-type':
+        ml_g = clone(learner)
+    else:
+        ml_g = None
 
     dml_plr_obj = dml.DoubleMLPLR(obj_dml_data,
-                                  ml_g, ml_m,
-                                  n_folds,
+                                  ml_l, ml_m, ml_g,
+                                  n_folds=n_folds,
                                   n_rep=n_rep,
                                   score=score,
                                   dml_procedure=dml_procedure)

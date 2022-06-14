@@ -41,7 +41,7 @@ def dml_iivm_pyvsr_fixture(generate_data_iivm, score, dml_procedure):
 
     dml_iivm_obj = dml.DoubleMLIIVM(obj_dml_data,
                                     ml_g, ml_m, ml_r,
-                                    n_folds,
+                                    n_folds=n_folds,
                                     dml_procedure=dml_procedure)
 
     np.random.seed(3141)

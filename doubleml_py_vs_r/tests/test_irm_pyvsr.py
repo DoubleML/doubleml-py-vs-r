@@ -40,7 +40,7 @@ def dml_irm_pyvsr_fixture(generate_data_irm, score, dml_procedure):
 
     dml_irm_obj = dml.DoubleMLIRM(obj_dml_data,
                                   ml_g, ml_m,
-                                  n_folds,
+                                  n_folds=n_folds,
                                   score=score,
                                   dml_procedure=dml_procedure)
 

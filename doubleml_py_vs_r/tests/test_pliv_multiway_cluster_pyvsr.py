@@ -14,28 +14,39 @@ pandas2ri.activate()
 
 
 @pytest.fixture(scope='module',
+                params=['partialling out', 'IV-type'])
+def score(request):
+    return request.param
+
+
+@pytest.fixture(scope='module',
                 params=['dml1', 'dml2'])
 def dml_procedure(request):
     return request.param
 
 
 @pytest.fixture(scope='module')
-def dml_pliv_twoway_cluster_pyvsr_fixture(generate_data_pliv_two_way_cluster, dml_procedure):
+def dml_pliv_twoway_cluster_pyvsr_fixture(generate_data_pliv_two_way_cluster, score, dml_procedure):
     n_folds = 2
 
     # collect data
     obj_dml_data = generate_data_pliv_two_way_cluster
 
-    # Set machine learning methods for g, m & r
+    # Set machine learning methods for l, m, & r
     learner = LinearRegression()
-    ml_g = clone(learner)
+    ml_l = clone(learner)
     ml_m = clone(learner)
     ml_r = clone(learner)
+    if score == 'IV-type':
+        ml_g = clone(learner)
+    else:
+        ml_g = None
 
     np.random.seed(3141)
     dml_pliv_obj = dml.DoubleMLPLIV(obj_dml_data,
-                                    ml_g, ml_m, ml_r,
-                                    n_folds,
+                                    ml_l, ml_m, ml_r, ml_g,
+                                    n_folds=n_folds,
+                                    score=score,
                                     dml_procedure=dml_procedure)
     print(obj_dml_data)
     dml_pliv_obj.fit()
@@ -44,7 +55,7 @@ def dml_pliv_twoway_cluster_pyvsr_fixture(generate_data_pliv_two_way_cluster, dm
     all_train, all_test = export_smpl_split_to_r(dml_pliv_obj.smpls[0])
 
     r_dataframe = pandas2ri.py2rpy(obj_dml_data.data)
-    res_r = r_MLPLIV_multiway_cluster(r_dataframe, 'partialling out', dml_procedure,
+    res_r = r_MLPLIV_multiway_cluster(r_dataframe, score, dml_procedure,
                                       all_train, all_test,
                                       obj_dml_data.cluster_cols[0],
                                       obj_dml_data.cluster_cols[1])
@@ -70,22 +81,27 @@ def test_dml_pliv_twoway_cluster_pyvsr_se(dml_pliv_twoway_cluster_pyvsr_fixture)
 
 
 @pytest.fixture(scope='module')
-def dml_pliv_one_cluster_pyvsr_fixture(generate_data_pliv_one_way_cluster, dml_procedure):
+def dml_pliv_one_cluster_pyvsr_fixture(generate_data_pliv_one_way_cluster, score, dml_procedure):
     n_folds = 2
 
     # collect data
     obj_dml_data = generate_data_pliv_one_way_cluster
 
-    # Set machine learning methods for g, m & r
+    # Set machine learning methods for l, m & r
     learner = LinearRegression()
-    ml_g = clone(learner)
+    ml_l = clone(learner)
     ml_m = clone(learner)
     ml_r = clone(learner)
+    if score == 'IV-type':
+        ml_g = clone(learner)
+    else:
+        ml_g = None
 
     np.random.seed(3141)
     dml_pliv_obj = dml.DoubleMLPLIV(obj_dml_data,
-                                    ml_g, ml_m, ml_r,
-                                    n_folds,
+                                    ml_l, ml_m, ml_r, ml_g,
+                                    n_folds=n_folds,
+                                    score=score,
                                     dml_procedure=dml_procedure)
     dml_pliv_obj.fit()
 
@@ -93,7 +109,7 @@ def dml_pliv_one_cluster_pyvsr_fixture(generate_data_pliv_one_way_cluster, dml_p
     all_train, all_test = export_smpl_split_to_r(dml_pliv_obj.smpls[0])
 
     r_dataframe = pandas2ri.py2rpy(obj_dml_data.data.drop(columns='cluster_var_j'))
-    res_r = r_MLPLIV_multiway_cluster(r_dataframe, 'partialling out', dml_procedure,
+    res_r = r_MLPLIV_multiway_cluster(r_dataframe, score, dml_procedure,
                                       all_train, all_test,
                                       obj_dml_data.cluster_cols[0])
 
