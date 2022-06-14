@@ -42,7 +42,7 @@ def dml_pliv_pyvsr_fixture(generate_data_pliv, score, dml_procedure):
     np.random.seed(3141)
     dml_pliv_obj = dml.DoubleMLPLIV(obj_dml_data,
                                     ml_g, ml_m, ml_r,
-                                    n_folds,
+                                    n_folds=n_folds,
                                     dml_procedure=dml_procedure)
 
     dml_pliv_obj.fit()
@@ -91,7 +91,7 @@ def dml_pliv_partial_x_pyvsr_fixture(generate_data_pliv_partialX, score, dml_pro
     np.random.seed(3141)
     dml_pliv_obj = dml.DoubleMLPLIV(obj_dml_data,
                                     ml_g, ml_m, ml_r,
-                                    n_folds,
+                                    n_folds=n_folds,
                                     dml_procedure=dml_procedure)
 
     dml_pliv_obj.fit()
@@ -138,7 +138,7 @@ def dml_pliv_partial_z_pyvsr_fixture(generate_data_pliv_partialZ, score, dml_pro
     np.random.seed(3141)
     dml_pliv_obj = dml.DoubleMLPLIV._partialZ(obj_dml_data,
                                               ml_r,
-                                              n_folds,
+                                              n_folds=n_folds,
                                               dml_procedure=dml_procedure)
 
     dml_pliv_obj.fit()
@@ -187,7 +187,7 @@ def dml_pliv_partial_xz_pyvsr_fixture(generate_data_pliv_partialXZ, score, dml_p
     np.random.seed(3141)
     dml_pliv_obj = dml.DoubleMLPLIV._partialXZ(obj_dml_data,
                                                ml_g, ml_m, ml_r,
-                                               n_folds,
+                                               n_folds=n_folds,
                                                dml_procedure=dml_procedure)
 
     dml_pliv_obj.fit()

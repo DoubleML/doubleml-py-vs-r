@@ -44,7 +44,7 @@ def dml_plr_pyvsr_fixture(generate_data_plr, score, dml_procedure, n_rep):
 
     dml_plr_obj = dml.DoubleMLPLR(obj_dml_data,
                                   ml_g, ml_m,
-                                  n_folds,
+                                  n_folds=n_folds,
                                   n_rep=n_rep,
                                   score=score,
                                   dml_procedure=dml_procedure)

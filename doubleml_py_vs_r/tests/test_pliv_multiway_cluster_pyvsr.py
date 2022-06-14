@@ -35,7 +35,7 @@ def dml_pliv_twoway_cluster_pyvsr_fixture(generate_data_pliv_two_way_cluster, dm
     np.random.seed(3141)
     dml_pliv_obj = dml.DoubleMLPLIV(obj_dml_data,
                                     ml_g, ml_m, ml_r,
-                                    n_folds,
+                                    n_folds=n_folds,
                                     dml_procedure=dml_procedure)
     print(obj_dml_data)
     dml_pliv_obj.fit()
@@ -85,7 +85,7 @@ def dml_pliv_one_cluster_pyvsr_fixture(generate_data_pliv_one_way_cluster, dml_p
     np.random.seed(3141)
     dml_pliv_obj = dml.DoubleMLPLIV(obj_dml_data,
                                     ml_g, ml_m, ml_r,
-                                    n_folds,
+                                    n_folds=n_folds,
                                     dml_procedure=dml_procedure)
     dml_pliv_obj.fit()
 
