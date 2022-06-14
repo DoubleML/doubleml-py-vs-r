@@ -29,6 +29,11 @@ r_MLPLR = robjects.r('''
             data = data.table(data)
             mlmethod_l = 'regr.lm'
             mlmethod_m = 'regr.lm'
+            if (score == "IV-type") {
+                mlmethod_g = 'regr.lm'
+            } else {
+                mlmethod_g = NULL
+            }
 
             Xnames = names(data)[names(data) %in% c("y", "d") == FALSE]
             data_ml = double_ml_data_from_data_frame(data, y_col = "y",
@@ -38,6 +43,7 @@ r_MLPLR = robjects.r('''
                                                n_folds = 2,
                                                ml_l = mlmethod_l,
                                                ml_m = mlmethod_m,
+                                               ml_g = mlmethod_g,
                                                dml_procedure = dml_procedure,
                                                score = score)
             smpls = list()
@@ -66,6 +72,11 @@ r_MLPLIV = robjects.r('''
             mlmethod_l = 'regr.lm'
             mlmethod_m = 'regr.lm'
             mlmethod_r = 'regr.lm'
+            if (score == "IV-type") {
+                mlmethod_g = 'regr.lm'
+            } else {
+                mlmethod_g = NULL
+            }
 
             Xnames = names(data)[names(data) %in% c("y", "d", "Z1") == FALSE]
             data_ml = double_ml_data_from_data_frame(data, y_col = "y",
@@ -77,6 +88,7 @@ r_MLPLIV = robjects.r('''
                                                  ml_l = mlmethod_l,
                                                  ml_m = mlmethod_m,
                                                  ml_r = mlmethod_r,
+                                                 ml_g = mlmethod_g,
                                                  dml_procedure = dml_procedure,
                                                  score = score)
 
@@ -273,6 +285,11 @@ r_MLPLIV_multiway_cluster = robjects.r('''
             mlmethod_l = 'regr.lm'
             mlmethod_m = 'regr.lm'
             mlmethod_r = 'regr.lm'
+            if (score == "IV-type") {
+                mlmethod_g = 'regr.lm'
+            } else {
+                mlmethod_g = NULL
+            }
 
             if (is.null(cluster_var2)) cluster_vars = cluster_var1 else cluster_vars = c(cluster_var1, cluster_var2)
             Xnames = names(data)[names(data) %in% c("Y", "D", "Z", cluster_vars) == FALSE]
@@ -286,6 +303,7 @@ r_MLPLIV_multiway_cluster = robjects.r('''
                                                  ml_l = mlmethod_l,
                                                  ml_m = mlmethod_m,
                                                  ml_r = mlmethod_r,
+                                                 ml_g = mlmethod_g,
                                                  dml_procedure = dml_procedure,
                                                  score = score)
 
