@@ -3,7 +3,7 @@ joblib
 numpy
 pandas
 scipy
-sklearn
+scikit-learn
 statsmodels
 pytest
 rpy2
