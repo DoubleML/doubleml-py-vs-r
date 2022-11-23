@@ -30,15 +30,15 @@ jobs:
           - {os: macOS-latest, python-version: 3.8, r-version: release}
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         path: doubleml-py-vs-r
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         repository: DoubleML/doubleml-for-py
         path: doubleml-for-py
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.config.python-version }}
     - name: Install Python pkg DoubleML (dev)
