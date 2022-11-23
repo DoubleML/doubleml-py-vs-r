@@ -30,15 +30,15 @@ jobs:
           - {os: macOS-latest, python-version: 3.8, r-version: release}
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         path: doubleml-py-vs-r
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         repository: DoubleML/doubleml-for-py
         path: doubleml-for-py
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.config.python-version }}
     - name: Install Python pkg DoubleML (dev)
@@ -52,7 +52,7 @@ jobs:
         pip install --editable .
 
     - name: Set up R
-      uses: r-lib/actions/setup-r@v1
+      uses: r-lib/actions/setup-r@v2
       with:
         r-version: ${{ matrix.config.r }}
     - name: Query R pkg dependencies (taken from released!)
@@ -63,7 +63,7 @@ jobs:
       shell: Rscript {0}
     - name: Cache R packages
       if: runner.os != 'Windows'
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: ${{ env.R_LIBS_USER }}
         key: ${{ runner.os }}-${{ hashFiles('doubleml-py-vs-r/.github/R-version') }}-dev-pkg-test-${{ hashFiles('doubleml-py-vs-r/.github/depends.Rds') }}
